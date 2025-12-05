@@ -1,11 +1,152 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>埃爾文的友善計算機 - 森林之友</title>
+    <style>
+        /* 基礎樣式和字體 */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e6f7e6; /* 淺綠色背景，代表森林 */
+            color: #2e8b57; /* 墨綠色文字 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 50px;
+        }
+
+        /* 容器樣式 */
+        .calculator-container {
+            background-color: #ffffff; /* 白色背景 */
+            border: 4px solid #6b8e23; /* 橄欖綠邊框，像樹幹 */
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+
+        /* 標題樣式 */
+        h1 {
+            color: #4a90e2; /* 藍色，代表黛西 */
+            margin-bottom: 20px;
+            border-bottom: 2px dashed #a9a9a9; /* 虛線，像藤蔓 */
+            padding-bottom: 10px;
+        }
+
+        /* 輸入區域樣式 */
+        .input-group {
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        label {
+            font-weight: bold;
+            color: #38761d; /* 深森林綠 */
+            flex-basis: 30%; /* 讓標籤佔用固定寬度 */
+            text-align: left;
+        }
+
+        input[type="number"] {
+            padding: 10px;
+            border: 2px solid #8fbc8f; /* 柔和的綠色邊框 */
+            border-radius: 8px;
+            flex-basis: 60%; /* 讓輸入框佔用主要寬度 */
+            text-align: right;
+            transition: border-color 0.3s;
+        }
+
+        input[type="number"]:focus {
+            border-color: #4a90e2; /* 聚焦時變成黛西的藍色 */
+            outline: none;
+        }
+
+        /* 按鈕樣式 (埃爾文的友善按鈕) */
+        button {
+            background-color: #5cb85c; /* 友善的綠色 */
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px; /* 圓角，像石頭或果實 */
+            font-size: 1.1em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s, transform 0.1s;
+            box-shadow: 0 4px #3d8b3d; /* 立體感 */
+        }
+
+        button:hover {
+            background-color: #4cae4c;
+        }
+
+        button:active {
+            transform: translateY(2px); /* 按下時微下沉 */
+            box-shadow: 0 2px #3d8b3d;
+        }
+
+        /* 結果顯示樣式 */
+        .result-display {
+            margin-top: 25px;
+            padding: 15px;
+            border-top: 2px solid #a9a9a9;
+            font-size: 1.2em;
+            color: #38761d;
+        }
+
+        #ans {
+            font-weight: bold;
+            color: #e88d15; /* 暖橙色，代表陽光或果實 */
+            margin-left: 10px;
+            font-size: 1.4em;
+        }
+
+    </style>
 </head>
 <body>
-    <h1>kkkk</h1>
+    <div class="calculator-container">
+        <h1>🌱 埃爾文的友善計算機 🌲</h1>
+        
+        <div class="input-group">
+            <label for="a">🌳 樹木 A 的數量</label>
+            <input id="a" type="number" value="0" min="0" />
+        </div>
+        <div class="input-group">
+            <label for="b">🦋 蝴蝶 B 的數量</label>
+            <input id="b" type="number" value="0" min="0" />
+        </div>
+        
+        <button onclick="calculate()">🌼 幫樹木和蝴蝶交朋友！ (計算總和) </button>
+        
+        <p class="result-display">🌿 森林夥伴總數：<span id="ans">0</span></p>
+    </div>
+    
+    <script>
+        function calculate(){
+            // 取得輸入元素
+            const inputA = document.getElementById("a");
+            const inputB = document.getElementById("b"); // 注意：原程式碼是 inputb，我改成 inputB 讓變數命名一致
+            const ansDom = document.getElementById("ans");
+            
+            // 確保值是數字，使用 parseFloat 以應對潛在的小數，雖然 input type="number" 通常已經是整數
+            // 這裡使用 Number() 函數比原程式碼的 `+` 轉換更清晰易讀
+            const numA = Number(inputA.value);
+            const numB = Number(inputB.value);
+            
+            // 檢查輸入是否為有效數字，以防止顯示 NaN
+            if (isNaN(numA) || isNaN(numB)) {
+                ansDom.innerText = "輸入無效，請輸入數字！";
+                ansDom.style.color = "#cc0000"; // 錯誤時紅色提示
+            } else {
+                // 計算總和
+                const result = numA + numB;
+                ansDom.innerText = result;
+                ansDom.style.color = "#e88d15"; // 恢復正常顏色
+            }
+        }
+    </script>
 </body>
 </html>
