@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>闇影島天氣預報 - 臺中市</title>
+    <style>
+        :root {
+            --viego-cyan: #00ffcc; /* 破敗綠藍 */
+            --gwen-blue: #5dade2; /* 關的聖潔藍 */
+            --gwen-purple: #a569bd; /* 關的紫色 */
+            --shadow-isles-black: #050b14; /* 闇影島深淵黑 */
+            --mist-text: #d1f2eb;
+        }
+
+        @keyframes mist-float {
+            0% { text-shadow: 0 0 5px var(--viego-cyan); }
+            50% { text-shadow: 0 0 20px var(--viego-cyan), 0 0 30px #ffffff; }
+            100% { text-shadow: 0 0 5px var(--viego-cyan); }
+        }
+
+        @keyframes gwen-snip {
+            0%, 100% { transform: rotate(-10deg); }
+            50% { transform: rotate(10deg) scale(1.1); }
+        }
+
+        body {
+            background-color: var(--shadow-isles-black);
+            background-image: radial-gradient(circle at center, #1a2a2a 0%, #050b14 100%);
+            color: var(--mist-text);
+            font-family: "Microsoft JhengHei", "Comic Sans MS", cursive;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* 標題區塊 */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border: 2px solid var(--viego-cyan);
+            padding: 20px;
+            background: rgba(0, 255, 204, 0.05);
+            box-shadow: inset 0 0 20px rgba(0, 255, 204, 0.2);
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: var(--viego-cyan);
+            margin: 0;
+            animation: mist-float 3s infinite;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: var(--gwen-purple);
+            margin: 10px 0 0;
+        }
+
+        /* 主要預報區塊 (維爾戈) */
+        .main-card {
+            width: 100%;
+            max-width: 600px;
+            background: linear-gradient(135deg, #0d1f1f 0%, #050b14 100%);
+            border-left: 10px solid var(--viego-cyan);
+            border-right: 2px solid var(--viego-cyan);
+            border-top: 2px solid var(--viego-cyan);
+            border-bottom: 2px solid var(--viego-cyan);
+            border-radius: 0 30px 0 30px;
+            padding: 30px;
+            margin-bottom: 40px;
+            position: relative;
+            box-shadow: 0 0 30px rgba(0, 255, 204, 0.3);
+        }
+
+        .main-card::before {
+            content: "⚔️ VIEGO";
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: var(--viego-cyan);
+            color: black;
+            padding: 2px 15px;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+
+        .current-temp {
+            font-size: 4rem;
+            font-weight: bold;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .big-icon {
+            font-size: 6rem;
+            animation: mist-float 4s infinite;
+        }
+
+        .quote {
+            font-style: italic;
+            color: #888;
+            margin-top: 20px;
+            border-top: 1px solid #333;
+            padding-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        /* 次要預報區塊 (關) */
+        .future-container {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            max-width: 800px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .small-card {
+            flex: 1;
+            min-width: 250px;
+            background: rgba(165, 105, 189, 0.1);
+            border: 2px solid var(--gwen-purple);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        .small-card:hover {
+            transform: translateY(-10px);
+            background: rgba(165, 105, 189, 0.2);
+        }
+
+        .small-card::before {
+            content: "✂️ GWEN";
+            position: absolute;
+            top: -12px;
+            right: 20px;
+            background: var(--gwen-purple);
+            color: white;
+            padding: 2px 10px;
+            font-size: 0.7rem;
+            border-radius: 5px;
+        }
+
+        .small-icon {
+            font-size: 3rem;
+            display: block;
+            margin: 10px 0;
+            animation: gwen-snip 3s infinite;
+        }
+
+        /* 數值標籤 */
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            background: #222;
+            margin: 5px;
+        }
+
+        .rain { color: #5dade2; }
+        .temp { color: #f39c12; }
+
+        @media (max-width: 600px) {
+            .current-temp { font-size: 2.5rem; flex-direction: column; }
+            .header h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>破敗迷霧：臺中預言</h1>
+        <p>「這迷霧，是我的愛慕，也是我的痛苦。」 — 維爾戈</p>
+    </div>
+
+    <div id="app">
+        <div style="text-align:center; font-size: 1.5rem;">正在感知靈魂波動...</div>
+    </div>
+
+    <script>
+        const API_URL = 'https://nutc-web-vic-peng.zeabur.app/api/weather/kaohsiung';
+
+        function getEmoji(weather) {
+            if (weather.includes('雨')) return '🌧️';
+            if (weather.includes('雲')) return '🌥️';
+            if (weather.includes('晴')) return '☀️';
+            return '🌫️';
+        }
+
+        function getTimePeriod(startTime) {
+            const hour = new Date(startTime).getHours();
+            if (hour >= 6 && hour < 12) return '🌅 黎明破曉';
+            if (hour >= 12 && hour < 18) return '☀️ 熾熱白晝';
+            return '🌙 永恆之夜';
+        }
+
+        function getViegoQuote(weather) {
+            if (weather.includes('雨')) return "「連天空都在為我的伊索德流淚...」";
+            if (weather.includes('晴')) return "「陽光太過刺眼，它照不亮我內心的黑暗。」";
+            return "「這迷霧正合我意，迷失在我的痛苦中吧！」";
+        }
+
+        function getGwenQuote(weather) {
+            if (weather.includes('雨')) return "「哎呀，別讓絲線淋濕了！」";
+            if (weather.includes('晴')) return "「多麼美妙的一天，適合縫紉！」";
+            return "「裁剪迷霧，是我最擅長的事。」";
+        }
+
+        async function init() {
+            try {
+                const response = await fetch(API_URL);
+                const result = await response.json();
+                const data = result.data;
+                const forecasts = data.forecasts;
+
+                let html = '';
+
+                // 主卡片 (第一時段 - 維爾戈)
+                const main = forecasts[0];
+                html += `
+                    <div class="main-card">
+                        <div style="color: var(--viego-cyan); font-weight: bold;">${getTimePeriod(main.startTime)} | ${main.startTime.split(' ')[1].substring(0,5)}</div>
+                        <div class="current-temp">
+                            <span class="big-icon">${getEmoji(main.weather)}</span>
+                            <div>
+                                <div>${main.maxTemp}</div>
+                                <div style="font-size: 1.2rem; color: var(--viego-cyan);">${main.weather}</div>
+                            </div>
+                        </div>
+                        <div style="margin: 15px 0;">
+                            <span class="badge">最低: ${main.minTemp}</span>
+                            <span class="badge rain">降雨率: ${main.rain}</span>
+                            <span class="badge" style="color: var(--gwen-purple)">${main.comfort}</span>
+                        </div>
+                        <div class="quote">${getViegoQuote(main.weather)}</div>
+                    </div>
+                `;
+
+                // 未來卡片 (關)
+                html += '<div class="future-container">';
+                for (let i = 1; i < forecasts.length; i++) {
+                    const f = forecasts[i];
+                    html += `
+                        <div class="small-card">
+                            <div style="font-size: 0.9rem; color: #888;">${getTimePeriod(f.startTime)}</div>
+                            <span class="small-icon">${getEmoji(f.weather)}</span>
+                            <div style="font-weight: bold; font-size: 1.2rem;">${f.minTemp} - ${f.maxTemp}</div>
+                            <div style="color: var(--gwen-purple); margin: 5px 0;">${f.weather}</div>
+                            <div style="font-size: 0.85rem; opacity: 0.8;">☔ 降雨 ${f.rain}</div>
+                            <div class="quote" style="font-size: 0.8rem; border:none;">${getGwenQuote(f.weather)}</div>
+                        </div>
+                    `;
+                }
+                html += '</div>';
+
+                document.getElementById('app').innerHTML = html;
+
+            } catch (error) {
+                document.getElementById('app').innerHTML = `<div style="color: red;">迷霧太重，無法讀取靈魂... (錯誤: ${error})</div>`;
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>
